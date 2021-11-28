@@ -436,11 +436,13 @@ class _DatePickerDialogState extends State<DatePickerDialog> with RestorationMix
   void _handleOk() {
     if (_entryMode.value == DatePickerEntryMode.input || _entryMode.value == DatePickerEntryMode.inputOnly) {
       final FormState form = _formKey.currentState!;
+     if(form.validate != null) {
       if (!form.validate()) {
         setState(() => _autoValidate.value = true);
         return;
       }
       form.save();
+      }
     }
     Navigator.pop(context, _selectedDate.value);
   }

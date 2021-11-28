@@ -83,20 +83,22 @@ class Form extends StatefulWidget {
       'behavior related to auto validation. '
       'This feature was deprecated after v1.19.0.',
     )
-    this.autovalidate = false,
+        this.autovalidate = false,
     this.onWillPop,
     this.onChanged,
     AutovalidateMode? autovalidateMode,
-  }) : assert(child != null),
-       assert(autovalidate != null),
-       assert(
-         autovalidate == false ||
-         autovalidate == true && autovalidateMode == null,
-         'autovalidate and autovalidateMode should not be used together.',
-       ),
-       autovalidateMode = autovalidateMode ??
-         (autovalidate ? AutovalidateMode.always : AutovalidateMode.disabled),
-       super(key: key);
+  })  : assert(child != null),
+        assert(autovalidate != null),
+        assert(
+          autovalidate == false ||
+              autovalidate == true && autovalidateMode == null,
+          'autovalidate and autovalidateMode should not be used together.',
+        ),
+        autovalidateMode = autovalidateMode ??
+            (autovalidate
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled),
+        super(key: key);
 
   /// Returns the closest [FormState] which encloses the given context.
   ///
@@ -107,7 +109,8 @@ class Form extends StatefulWidget {
   /// form.save();
   /// ```
   static FormState? of(BuildContext context) {
-    final _FormScope? scope = context.dependOnInheritedWidgetOfExactType<_FormScope>();
+    final _FormScope? scope =
+        context.dependOnInheritedWidgetOfExactType<_FormScope>();
     return scope?._formState;
   }
 
@@ -171,8 +174,8 @@ class FormState extends State<Form> {
   void _fieldDidChange() {
     widget.onChanged?.call();
 
-    _hasInteractedByUser = _fields
-        .any((FormFieldState<dynamic> field) => field._hasInteractedByUser.value);
+    _hasInteractedByUser = _fields.any(
+        (FormFieldState<dynamic> field) => field._hasInteractedByUser.value);
     _forceRebuild();
   }
 
@@ -217,8 +220,7 @@ class FormState extends State<Form> {
 
   /// Saves every [FormField] that is a descendant of this [Form].
   void save() {
-    for (final FormFieldState<dynamic> field in _fields)
-      field.save();
+    for (final FormFieldState<dynamic> field in _fields) field.save();
   }
 
   /// Resets every [FormField] that is a descendant of this [Form] back to its
@@ -229,8 +231,7 @@ class FormState extends State<Form> {
   /// If the form's [Form.autovalidateMode] property is [AutovalidateMode.always],
   /// the fields will all be revalidated after being reset.
   void reset() {
-    for (final FormFieldState<dynamic> field in _fields)
-      field.reset();
+    for (final FormFieldState<dynamic> field in _fields) field.reset();
     _hasInteractedByUser = false;
     _fieldDidChange();
   }
@@ -239,13 +240,13 @@ class FormState extends State<Form> {
   /// returns true if there are no errors.
   ///
   /// The form will rebuild to report the results.
-  bool validate() {
+  bool? validate() {
     _hasInteractedByUser = true;
     _forceRebuild();
     return _validate();
   }
 
-  bool _validate() {
+  bool? _validate() {
     bool hasError = false;
     for (final FormFieldState<dynamic> field in _fields)
       hasError = !field.validate() || hasError;
@@ -259,9 +260,9 @@ class _FormScope extends InheritedWidget {
     required Widget child,
     required FormState formState,
     required int generation,
-  }) : _formState = formState,
-       _generation = generation,
-       super(key: key, child: child);
+  })  : _formState = formState,
+        _generation = generation,
+        super(key: key, child: child);
 
   final FormState _formState;
 
@@ -330,19 +331,21 @@ class FormField<T> extends StatefulWidget {
       'behavior related to auto validation. '
       'This feature was deprecated after v1.19.0.',
     )
-    this.autovalidate = false,
+        this.autovalidate = false,
     this.enabled = true,
     AutovalidateMode? autovalidateMode,
     this.restorationId,
-  }) : assert(builder != null),
-       assert(
-         autovalidate == false ||
-         autovalidate == true && autovalidateMode == null,
-         'autovalidate and autovalidateMode should not be used together.',
-       ),
-       autovalidateMode = autovalidateMode ??
-         (autovalidate ? AutovalidateMode.always : AutovalidateMode.disabled),
-       super(key: key);
+  })  : assert(builder != null),
+        assert(
+          autovalidate == false ||
+              autovalidate == true && autovalidateMode == null,
+          'autovalidate and autovalidateMode should not be used together.',
+        ),
+        autovalidateMode = autovalidateMode ??
+            (autovalidate
+                ? AutovalidateMode.always
+                : AutovalidateMode.disabled),
+        super(key: key);
 
   /// An optional method to call with the final value when the form is saved via
   /// [FormState.save].
@@ -478,8 +481,7 @@ class FormFieldState<T> extends State<FormField<T>> with RestorationMixin {
   }
 
   void _validate() {
-    if (widget.validator != null)
-      _errorText.value = widget.validator!(_value);
+    if (widget.validator != null) _errorText.value = widget.validator!(_value);
   }
 
   /// Updates this field's state to the new value. Useful for responding to

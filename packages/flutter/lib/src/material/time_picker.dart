@@ -2079,11 +2079,13 @@ class _TimePickerDialogState extends State<TimePickerDialog> with RestorationMix
   void _handleOk() {
     if (_entryMode.value == TimePickerEntryMode.input) {
       final FormState form = _formKey.currentState!;
+      if(form.validate != null) {
       if (!form.validate()) {
         setState(() { _autoValidate.value = true; });
         return;
       }
       form.save();
+      ]
     }
     Navigator.pop(context, _selectedTime.value);
   }
